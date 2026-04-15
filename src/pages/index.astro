@@ -12,12 +12,11 @@ import SkillLayout from '@/components/home/SkillLayout.astro'
 import config from '@/site-config'
 import { Spoiler } from 'packages/pure/components/user'
 
-const languages = ['Python', 'Go', 'C', 'C++']
-const frameworks = ['Gin', 'Flask', 'FastAPI']
+const languages = ['Python', 'Go', 'C']
+const frameworks = ['Gin','Gorm', 'FastAPI']
 const databases = ['MySQL', 'Redis', 'Qdrant']
-const messageQueues = ['RabbitMQ']
 const developmentTools = ['Docker', 'Vim', 'Git', 'Markdown']
-const ai = ['LangGraph', 'Eino']
+const ai = ['LangGraph', 'LangChain']
 const MAX_POSTS = 10
 const allPosts = await getBlogCollection()
 const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
@@ -50,7 +49,7 @@ if (!images[imagePath])
             <Icon name='location' class='size-5' slot='icon' />
           </Label>
          
-          <Label title='yuanji597@gmail.com' >
+          <Label title='yuanj597@gmail.com' >
             <Icon name= 'email' class='size-5' slot='icon' />
           </Label>
 
@@ -73,11 +72,6 @@ if (!images[imagePath])
       <img 
            alt="CodeTime Badge" 
            src="https://shields.jannchie.com/endpoint?style=flat-square&color=222&url=https%3A%2F%2Fapi.codetime.dev%2Fv3%2Fusers%2Fshield%3Fuid%3D35283"
-           class='rounded-md border'
-      />
-<img 
-           alt="CodeTime Badge" 
-           src="https://shields.jannchie.com/endpoint?style=flat-square&color=222&url=https%3A%2F%2Fapi.codetime.dev%2Fv3%2Fusers%2Fshield%3Fuid%3D35283%26language%3Dgo"
            class='rounded-md border'
       />
 
@@ -107,7 +101,6 @@ if (!images[imagePath])
         <SkillLayout title='Frameworks' skills={frameworks} />
         <SkillLayout title='AI / Agents' skills={ai} />
         <SkillLayout title='Databases' skills={databases} />
-        <SkillLayout title='Message Queues' skills={messageQueues} />
         <SkillLayout title='Tools' skills={developmentTools} />
       </Section>
       
