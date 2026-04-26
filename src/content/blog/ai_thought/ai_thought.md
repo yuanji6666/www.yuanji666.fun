@@ -1,5 +1,5 @@
 ---
-title: Harness-AI时代的软件工程
+title: AI革命，Agent，一些想法
 publishDate: 2026-04-1 14:50:00
 description: 几个月以来学习agent开发的一些想法
 tags:
