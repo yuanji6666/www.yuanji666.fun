@@ -9,7 +9,7 @@ language: 中文
 ---
 # 架构全景
 
-![[image.png]]
+![cc架构全景](./image.png)
 
 # 一些启发
 
