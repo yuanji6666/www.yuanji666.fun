@@ -458,9 +458,9 @@ button {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 2px;
-  padding: 10px 0;
-  border: 1px solid transparent;
+  gap: 3px;
+  padding: 0;
+  border: 0;
   background: transparent;
   text-align: left;
   cursor: pointer;
@@ -474,13 +474,44 @@ button {
 
 .post-title {
   color: var(--text);
-  font-weight: 500;
+  font-size: 2rem;
+  line-height: 1.2;
+  font-weight: 600;
 }
 
 .post-date {
   color: var(--muted);
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.78rem;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+}
+
+.blog-directory {
+  display: grid;
+  gap: 16px;
+}
+
+.blog-directory-list {
+  gap: 18px;
+}
+
+.blog-back {
+  align-self: flex-start;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font: inherit;
+}
+
+.blog-back:hover {
+  color: var(--text);
+}
+
+.blog-detail {
+  display: grid;
+  gap: 14px;
 }
 
 .stack {
@@ -508,10 +539,24 @@ button {
 
 .project-list h3 {
   margin: 0 0 4px;
-  font-size: 1.04rem;
+  font-size: 2.3rem;
 }
 
-.project-list p,
+.project-link {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.project-link:hover {
+  text-decoration: underline;
+}
+
+.project-list p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1.3rem;
+}
+
 .list-block p,
 .about-copy p {
   margin: 0;

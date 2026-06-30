@@ -2,10 +2,11 @@
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import avatarUrl from '../avatar.jpg'
 import { about, posts, projects, sitePages } from './content/posts'
-import { extractToc, renderMarkdown } from './utils/markdown'
+import { renderMarkdown } from './utils/markdown'
 
 const activePostSlug = ref(posts[0].slug)
 const activeSection = ref('about')
+const activeBlogView = ref('directory')
 const articleRef = ref(null)
 
 const activePost = computed(
@@ -13,13 +14,23 @@ const activePost = computed(
 )
 
 const renderedArticle = computed(() => renderMarkdown(activePost.value.markdown))
-const toc = computed(() => extractToc(activePost.value.markdown))
-
 const pageLinks = sitePages
 let mermaidReady = null
 
 function scrollToSection(id) {
   activeSection.value = id
+  if (id === 'blog') {
+    activeBlogView.value = 'directory'
+  }
+}
+
+function openPost(slug) {
+  activePostSlug.value = slug
+  activeBlogView.value = 'post'
+}
+
+function backToBlogDirectory() {
+  activeBlogView.value = 'directory'
 }
 
 async function getMermaid() {
@@ -59,13 +70,8 @@ async function renderMermaidBlocks() {
   })
 }
 
-watch(renderedArticle, async () => {
-  await nextTick()
-  await renderMermaidBlocks()
-})
-
-watch(activeSection, async (section) => {
-  if (section !== 'blog') return
+watch([renderedArticle, activeBlogView], async ([, blogView]) => {
+  if (blogView !== 'post') return
   await nextTick()
   await renderMermaidBlocks()
 })
@@ -164,42 +170,30 @@ onMounted(async () => {
       </section>
 
       <section v-else-if="activeSection === 'blog'" class="panel-content story">
-        <article ref="articleRef" class="article">
-          <header class="article-header">
-            <p class="article-kicker">{{ activePost.date }}</p>
-            <h2>{{ activePost.title }}</h2>
-            <p class="article-lead">
-              {{ activePost.description }}
-            </p>
-          </header>
-
-          <div class="article-body" v-html="renderedArticle"></div>
-        </article>
-
-        <div class="minor-section">
-          <div class="section-meta">Contents</div>
-          <ol class="toc">
-            <li v-for="item in toc" :key="item.id" :class="`level-${item.level}`">
-              <a :href="`#${item.id}`">{{ item.text }}</a>
-            </li>
-          </ol>
-        </div>
-
-        <div class="minor-section">
-          <div class="section-meta">Writing</div>
-          <ul class="post-list">
+        <div v-if="activeBlogView === 'directory'" class="blog-directory">
+          <ul class="post-list blog-directory-list">
             <li v-for="post in posts" :key="post.slug">
-              <button
-                class="post-link"
-                type="button"
-                :data-active="post.slug === activePostSlug"
-                @click="activePostSlug = post.slug"
-              >
-                <span class="post-title">{{ post.title }}</span>
+              <button class="post-link blog-card" type="button" @click="openPost(post.slug)">
                 <span class="post-date">{{ post.date }}</span>
+                <span class="post-title">{{ post.title }}</span>
               </button>
             </li>
           </ul>
+        </div>
+
+        <div v-else class="blog-detail">
+          <button class="blog-back" type="button" @click="backToBlogDirectory">
+            ← Back to directory
+          </button>
+
+          <article ref="articleRef" class="article">
+            <header class="article-header">
+              <p class="article-kicker">{{ activePost.date }}</p>
+              <h2>{{ activePost.title }}</h2>
+            </header>
+
+            <div class="article-body" v-html="renderedArticle"></div>
+          </article>
         </div>
       </section>
 
@@ -217,7 +211,16 @@ onMounted(async () => {
       <section v-else-if="activeSection === 'projects'" class="panel-content stack">
         <ul class="project-list">
           <li v-for="project in projects" :key="project.title">
-            <h3>{{ project.title }}</h3>
+            <h3>
+              <a
+                class="project-link"
+                :href="project.href || undefined"
+                :target="project.href ? '_blank' : undefined"
+                :rel="project.href ? 'noreferrer' : undefined"
+              >
+                {{ project.title }}
+              </a>
+            </h3>
             <p>{{ project.description }}</p>
           </li>
         </ul>
