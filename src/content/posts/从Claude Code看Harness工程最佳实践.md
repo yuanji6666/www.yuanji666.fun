@@ -1,8 +1,5 @@
 2026-06-15
 
-# 架构全景
-
-![[Claude Code System.png]]
 
 # 一些启发
 

@@ -85,7 +85,7 @@ onMounted(async () => {
 <template>
   <div class="shell">
     <header class="site-header">
-      <a class="brand" href="#about" aria-label="About Ji">
+      <a class="brand" href="#" aria-label="About Ji" @click.prevent="scrollToSection('about')">
         <span class="brand-signature">Yuan</span>
       </a>
 
@@ -165,6 +165,14 @@ onMounted(async () => {
               </span>
               <span class="contact-label">{{ contact.label }}</span>
             </a>
+          </div>
+
+          <div v-if="about.experiences?.length" class="about-experiences">
+            <div v-for="item in about.experiences" :key="item.period" class="experience-item">
+              <span class="experience-period">{{ item.period }}</span>
+              <span v-if="!item.href" class="experience-text" v-html="item.text"></span>
+              <a v-else class="experience-text" :href="item.href" target="_blank" rel="noreferrer" v-html="item.text"></a>
+            </div>
           </div>
         </div>
       </section>

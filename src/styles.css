@@ -282,6 +282,36 @@ button {
   height: auto;
 }
 
+.about-experiences {
+  margin-top: 2.2rem;
+}
+
+.experience-item {
+  display: flex;
+  align-items: baseline;
+  gap: 1.1em;
+  padding: 0.35em 0;
+}
+
+.experience-period {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.88rem;
+  color: var(--muted);
+  letter-spacing: 0.01em;
+  flex-shrink: 0;
+}
+
+.experience-text {
+  font-size: 1.08rem;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+.experience-text a {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
 .article,
 .list-block,
 .project-list li,
@@ -322,7 +352,7 @@ button {
 
 .article-body {
   font-family: 'Crimson Pro', 'Noto Serif SC', 'Source Han Serif SC', 'LXGW WenKai', serif;
-  font-size: 1.03rem;
+  font-size: 1.08rem;
 }
 
 .article-body :is(h2, h3, h4) {

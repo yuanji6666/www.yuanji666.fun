@@ -86,10 +86,25 @@ export const about = {
   paragraphs: [
     "Hi, I'm Ji Yuan.",
     "I'm a sophomore majoring in CS at HUST.",
-    "我喜欢计算机，享受编程的乐趣，",
+    '我喜欢计算机，享受编程的乐趣，',
     '目前在探索并学习整个计算机知识体系。',
     '努力拥抱时代，同时做一个纯粹的人，',
     '梦想成为一个有影响力的开源贡献者。',
+  ],
+  experiences: [
+    {
+      period: 'Jul 2026',
+      text: '<strong>Full-Stack Development</strong> Intern at <strong>Tencent WeChat Group (WXG)</strong>.',
+    },
+    {
+      period: 'Mar 2026',
+      text: 'Participated in developing <strong>StrokeClaw</strong>, a multi-agent clinical decision support system.',
+      href: 'https://github.com/inagetawaycar123/StrokeClaw',
+    },
+    {
+      period: 'Sep 2024',
+      text: 'Started B.S. in <strong>Computer Science <strong> at <strong>HUST</strong>.',
+    },
   ],
   contacts: [
     {
