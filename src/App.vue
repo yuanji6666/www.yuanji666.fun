@@ -197,17 +197,6 @@ onMounted(async () => {
         </div>
       </section>
 
-      <section v-else-if="activeSection === 'notes'" class="panel-content stack">
-        <div class="list-block">
-          <p>一组更短的想法，保留最少的包装。</p>
-          <ul>
-            <li>标题要像目录，不要像广告。</li>
-            <li>段落之间留白要稳定。</li>
-            <li>链接是页面里唯一的强调色。</li>
-          </ul>
-        </div>
-      </section>
-
       <section v-else-if="activeSection === 'projects'" class="panel-content stack">
         <ul class="project-list">
           <li v-for="project in projects" :key="project.title">

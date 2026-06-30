@@ -114,7 +114,6 @@ export const sitePages = [
   { id: 'about', label: 'About' },
   { id: 'blog', label: 'Blog' },
   { id: 'projects', label: 'Projects' },
-  { id: 'notes', label: 'Notes' },
 ]
 
 export const projects = [
