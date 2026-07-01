@@ -97,7 +97,7 @@ export const about = {
       text: '<strong>Full-Stack Development</strong> Intern at <strong>Tencent WeChat Group (WXG)</strong>.',
     },
     {
-      period: 'Mar 2026',
+      period: 'Dec 2025',
       text: 'Participated in developing <strong>StrokeClaw</strong>, a multi-agent clinical decision support system.',
       href: 'https://github.com/inagetawaycar123/StrokeClaw',
     },
