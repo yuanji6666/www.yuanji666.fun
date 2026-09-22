@@ -1,20 +1,34 @@
 <script setup>
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import avatarUrl from '../avatar.jpg'
-import { about, posts, projects, sitePages } from './content/posts'
+import { posts, siteCopy } from './content/posts'
 import { renderMarkdown } from './utils/markdown'
 
+const LOCALE_KEY = 'site-locale'
+
+function readLocale() {
+  try {
+    const saved = localStorage.getItem(LOCALE_KEY)
+    if (saved === 'en' || saved === 'zh') return saved
+  } catch {
+    // 隐私模式下忽略本地存储
+  }
+
+  return 'en'
+}
+
+const locale = ref(readLocale())
 const activePostSlug = ref(posts[0].slug)
 const activeSection = ref('about')
 const activeBlogView = ref('directory')
 const articleRef = ref(null)
+const copy = computed(() => siteCopy[locale.value])
 
 const activePost = computed(
   () => posts.find((post) => post.slug === activePostSlug.value) ?? posts[0],
 )
 
 const renderedArticle = computed(() => renderMarkdown(activePost.value.markdown))
-const pageLinks = sitePages
 let mermaidReady = null
 
 function scrollToSection(id) {
@@ -32,6 +46,23 @@ function openPost(slug) {
 function backToBlogDirectory() {
   activeBlogView.value = 'directory'
 }
+
+function toggleLocale() {
+  locale.value = locale.value === 'zh' ? 'en' : 'zh'
+}
+
+watch(
+  locale,
+  (value) => {
+    document.documentElement.lang = value === 'zh' ? 'zh-CN' : 'en'
+    try {
+      localStorage.setItem(LOCALE_KEY, value)
+    } catch {
+      // 隐私模式下忽略本地存储
+    }
+  },
+  { immediate: true },
+)
 
 async function getMermaid() {
   if (!mermaidReady) {
@@ -89,24 +120,35 @@ onMounted(async () => {
         <span class="brand-signature">Yuan</span>
       </a>
 
-      <nav class="site-nav" aria-label="Primary">
+      <div class="header-tools">
+        <nav class="site-nav" :aria-label="copy.ui.navLabel">
+          <button
+            v-for="link in copy.pages"
+            :key="link.id"
+            class="nav-link"
+            type="button"
+            :data-active="activeSection === link.id"
+            @click="scrollToSection(link.id)"
+          >
+            <span>{{ link.label }}</span>
+          </button>
+        </nav>
+
         <button
-          v-for="link in pageLinks"
-          :key="link.id"
-          class="nav-link"
+          class="lang-toggle"
           type="button"
-          :data-active="activeSection === link.id"
-          @click="scrollToSection(link.id)"
+          :aria-label="copy.ui.switchLanguage"
+          @click="toggleLocale"
         >
-          <span>{{ link.label }}</span>
+          <span>{{ locale === 'zh' ? 'EN' : '中文' }}</span>
         </button>
-      </nav>
+      </div>
     </header>
 
     <main class="layout">
       <section v-if="activeSection === 'about'" class="panel-content intro">
         <div class="about-panel">
-          <h1 class="about-heading">{{ about.heading }}</h1>
+          <h1 class="about-heading">{{ copy.about.heading }}</h1>
 
           <div class="about-grid">
             <div class="about-rail">
@@ -114,7 +156,7 @@ onMounted(async () => {
             </div>
 
             <div class="about-copy">
-              <p v-for="line in about.paragraphs" :key="line">
+              <p v-for="line in copy.about.paragraphs" :key="line">
                 {{ line }}
               </p>
             </div>
@@ -122,7 +164,7 @@ onMounted(async () => {
 
           <div class="about-links" aria-label="Contact links">
             <a
-              v-for="contact in about.contacts"
+              v-for="contact in copy.about.contacts"
               :key="contact.href"
               class="contact-link"
               :href="contact.href"
@@ -167,8 +209,8 @@ onMounted(async () => {
             </a>
           </div>
 
-          <div v-if="about.experiences?.length" class="about-experiences">
-            <div v-for="item in about.experiences" :key="item.period" class="experience-item">
+          <div v-if="copy.about.experiences?.length" class="about-experiences">
+            <div v-for="item in copy.about.experiences" :key="item.period" class="experience-item">
               <span class="experience-period">{{ item.period }}</span>
               <span v-if="!item.href" class="experience-text" v-html="item.text"></span>
               <a v-else class="experience-text" :href="item.href" target="_blank" rel="noreferrer" v-html="item.text"></a>
@@ -191,7 +233,7 @@ onMounted(async () => {
 
         <div v-else class="blog-detail">
           <button class="blog-back" type="button" @click="backToBlogDirectory">
-            ← Back to directory
+            ← {{ copy.ui.backToDirectory }}
           </button>
 
           <article ref="articleRef" class="article">
@@ -207,7 +249,7 @@ onMounted(async () => {
 
       <section v-else-if="activeSection === 'projects'" class="panel-content stack">
         <ul class="project-list">
-          <li v-for="project in projects" :key="project.title">
+          <li v-for="project in copy.projects" :key="project.title">
             <h3>
               <a
                 class="project-link"
